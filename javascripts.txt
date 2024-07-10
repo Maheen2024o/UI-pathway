@@ -1,0 +1,272 @@
+//Chapter: 4
+document.querySelector('#toggle-all').click()
+document.querySelector("ul.todo-list > li:nth-child(1) input.toggle").click()
+document.querySelector("ul.todo-list > li:nth-child(1) button.destroy").click()
+document.querySelector("button.clear-completed").click()
+document.querySelector("ul.filters > li:nth-child(1) > a").click()
+location.hash = '#/'
+
+document.querySelector("input.new-todo").value="hello"
+document.querySelector("input.new-todo").dispatchEvent(new Event('change', {'bubbles':true}))
+document.querySelector("ul.todo-list > li:nth-child(2) label").dispatchEvent(new Event('dblclick', {'bubbles': true}))
+document.querySelector("ul.todo-list > li:nth-child(2) .edit").value = "amended"
+document.querySelector("ul.todo-list > li:nth-child(2) .edit").dispatchEvent(new Event('blur'))
+
+//Chapter: 5
+toggles = document.querySelectorAll(".toggle").length
+
+for (let i = 0; i < toggles; i++) {
+    document.querySelectorAll(".toggle")[i].click();
+}
+
+//Chapter: 6
+var toggles = document.querySelectorAll('.toggle');
+
+for(togglepos=0;togglepos<toggles.length;togglepos++){
+	if(togglepos%2==1){
+		toggles[togglepos].click();
+	}
+}
+
+
+//chapter: 8
+function clickItem(item){
+    item.click();
+}
+
+clickItem(document.querySelector('#toggle-all'))
+
+var toggles=document.querySelectorAll('.toggle')
+toggles.forEach(clickItem)
+
+// Creating an object
+var autoTodo = new function() {
+
+    this.clickItem = function(item) {
+        item.click();
+    }
+
+    this.toggleAll = function() {
+        document.querySelector('#toggle-all').click();
+    }
+
+    this.selectItemX = function(x) {
+        document.querySelector("ul.todo-list > li:nth-child(" + x + ") input.toggle").click()
+    }
+
+    this.deleteItemX = function(x) {
+        document.querySelector('ul.todo-list > li:nth-child(' + x + ') button.destroy').click()
+    }
+
+    this.clearCompleted = function() {
+        document.querySelector('button.clear-completed').click();
+    }
+
+    this.filterCompleted = function() {
+        location.hash = "/completed";
+    }
+
+    this.filterAll = function() {
+        location.hash = "/";
+    }
+
+    this.filterActive = function() {
+        location.hash = "/active";
+    }
+
+    this.createTodo = function(name) {
+        document.querySelector('input.new-todo').value = name;
+        document.querySelector('input.new-todo').dispatchEvent(new Event('change',{
+            'bubbles': true
+        }));
+    }
+
+    this.amendTodo = function(x, amendedValue) {
+        document.querySelector('ul.todo-list > li:nth-child(' + x + ') > div > label').dispatchEvent(new Event('dblclick',{
+            'bubbles': true
+        }));
+        document.querySelector('ul.todo-list > li:nth-child(' + x + ') .edit').value = amendedValue;
+        document.querySelector('ul.todo-list > li:nth-child(' + x + ') .edit').dispatchEvent(new Event('blur'));
+    }
+
+}
+//calling object
+autoTodo.createTodo("hello"); //something like this
+
+//chapter: 9
+setTimeout(autoTodo.createTodo("hello again"), 1000)
+
+function createTodo(name){
+      document.querySelector(`input.new-todo`).value=name;
+      document.querySelector(`input.new-todo`).dispatchEvent(new Event('change', { 'bubbles': true }))
+}
+
+
+
+
+for(x=1;x<=100;x++){
+    setTimeout(createTodo, x*100, "todo "+x)
+
+}
+
+for(x=1;x<=100;x++){
+    setTimeout(
+        function (name){
+            document.querySelector("input.new-todo").value=name;
+            document.querySelector("input.new-todo").dispatchEvent(new Event('change', { 'bubbles': true }))
+        }
+    , x*100,"todo "+x)
+}
+
+
+//chapter: 10
+var botTodoCount = 0;
+var creatorBot = setInterval(
+    function(){
+        document.querySelector('input.new-todo').value="todo " +botTodoCount;
+        document.querySelector('input.new-todo').dispatchEvent(new Event('change',{'bubbles':true}));
+
+        botTodoCount++;
+
+        if(botTodoCount>=100){
+            clearInterval(creatorBot);
+        }
+    }, 500);
+
+//chapter: 11
+
+javascript: (function() {
+    let max = prompt("how many?");
+    if (max) {
+        for (let x = 1; x <= max; x++) {
+            setTimeout(function (name) {
+                document.querySelector("input.new-todo").value = name;
+                document.querySelector("input.new-todo").dispatchEvent(new Event('change', { 'bubbles': true }));
+            }, x * 100, "todo " + x);
+        }
+    }
+})();
+
+//chapter: 12
+var autoTodo = new function () //any function can become a constructor instance using the new keyword
+{
+    this.toggleAll = function () {
+        document.querySelector("#toggle-all").click()
+    }
+
+    this.selectItemX = function (x) {
+        document.querySelector("ul.todo-list > li:nth-child(" + x + ") input.toggle").click()
+    }
+
+    this.deleteItemX = function (x) {
+        document.querySelector("ul.todo-list > li:nth-child(" + x + ") button.destroy").click()
+    }
+
+    this.selectAllFilter = function () {
+        // document.querySelector("ul.filters > li:nth-child(1) > a").click()
+
+        location.hash = '/'
+    }
+
+    this.selectActiveFilter = function () {
+        location.hash = '/active'
+    }
+
+    this.selectCompletedFilter = function () {
+        location.hash = '/completed'
+    }
+
+    this.createTodo = function (valuetodo) {
+        document.querySelector("input.new-todo").value = valuetodo;
+        document.querySelector("input.new-todo").dispatchEvent(new Event('change', {
+            'bubbles': true
+        }));
+    }
+
+    this.amendTodo = function (valuetodo, x) {
+        document.querySelector("ul.todo-list > li:nth-child(" + x + ") label").dispatchEvent(new Event('dblclick', {
+            'bubbles': true
+        }));
+        document.querySelector("ul.todo-list > li:nth-child(" + x + ") .edit").value = valuetodo;
+        document.querySelector("ul.todo-list > li:nth-child(" + x + ") .edit").dispatchEvent(new Event('blur'));
+    }
+
+    this.toggleAllItem = function () {
+        toggles = document.querySelectorAll("ul.todo-list input.toggle")
+        for (let i = 0; i < toggles.length; i++) {
+            document.querySelectorAll("ul.todo-list input.toggle")[i].click();
+    }
+    }
+
+}
+
+//Rando Todo Bot
+
+var rando = new function(){
+    
+    function getRandomInt(x){
+        return Math.floor(Math.random() * x);
+    }
+
+    function getRandomItemIndex(){
+        max = document.querySelectorAll("ul.todo-list li").length;
+        if(max===0){
+            console.log("no items to choose from");
+            return 0;
+        }
+        x = getRandomInt(max)+1;
+        return x;
+    }   
+
+    this.toggleAll = function(){
+        console.log("toggle all");
+        autoTodo.toggleAll();
+    }
+
+    this.selectRandomItem = function () {    
+        x = getRandomItemIndex();
+        if(x>0){    
+            console.log("select item " + x);
+            autoTodo.selectItemX(x);
+        }
+    }
+
+    this.createRandomTodo = function(){
+        console.log("create todo");   
+        autoTodo.createTodo("random todo " +  Date.now());
+    }
+
+    this.amendRandomTodo = function(){
+        x = getRandomItemIndex();
+        if(x>0){  
+            console.log("amend todo" + x);   
+            autoTodo.amendTodo(x, "amended random todo " +  Date.now());
+        }
+    }
+
+    
+}
+
+
+for(var prop in autoTodo){
+  if(typeof autoTodo[prop] == 'function'){console.log(prop)}
+}
+
+
+var randoBot = setInterval(function(){
+
+	var theFunctions = [];
+
+	for(var prop in rando){
+        if(typeof rando[prop]== 'function'){
+            theFunctions.push(prop)
+        }
+	}
+
+	var randomFunctionIndex = Math.floor(Math.random()*theFunctions.length);
+
+	rando[theFunctions[randomFunctionIndex]]();
+
+},1000);
+
+//clearInterval(randoBot)
