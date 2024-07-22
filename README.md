@@ -5,6 +5,7 @@
 # Assertions Used:
 ### Test Case: successfulSignIn
 - assertEquals("https://www.saucedemo.com/inventory.html", driver.getCurrentUrl());
+  
 **Reasoning:** This assertion verifies that after a successful login, the user is redirected to the inventory page. The expected URL is checked to ensure the login was successful and the user reached the correct destination.
 
 
