@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class allSevenTests {
     protected WebDriver driver;
-    private static final String HUB_URL = "http://172.16.2.63:4444";
+    private static final String HUB_URL = "http://192.168.1.12:4444";
     private static ExtentTest testReport;
 
 
@@ -42,7 +42,7 @@ public class allSevenTests {
         driver = initializeDriver(Config.getBrowser());
 
         // Read data from JSON file
-        JSONObject userData = Json.readUserData("C:\\Users\\Maheen\\IdeaProjects\\Junit\\src\\test\\java\\testdata.json");
+        JSONObject userData = Json.readUserData("src/main/resources/testdata.json");
         String username = (String) userData.get("username");
         String password = (String) userData.get("password");
         login(driver,username,password);
@@ -62,10 +62,27 @@ public class allSevenTests {
     @Tag("loginsuccessful")
     @Test
     public void successfulSignIn() throws MalformedURLException {
+        try {
         testReport = Report.createTest("Verify successful SignIn");
         assertEquals("https://www.saucedemo.com/inventory.html", driver.getCurrentUrl());
+        // Log pass in the report
+        testReport.pass("Successfully signed in and navigated to the inventory page.");
+    } catch (AssertionError e) {
+        // Log the assertion error and mark the test as failed
+        testReport.fail("Assertion failed: " + e.getMessage());
+        throw e; // Re-throw to ensure the test is marked as failed
+    } catch (Exception e) {
+        // Log any other exception and mark the test as failed
+        testReport.fail("Test encountered an exception: " + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        // Ensure the driver is closed
+        if (driver != null) {
+            driver.quit();
+        }
+            Report.flush();
+    }
 
-        driver.quit();
     }
 
     //add to cart and remove
@@ -73,6 +90,7 @@ public class allSevenTests {
     @Test
     public void addItemToCartAndRemoveFromProductsPage() throws MalformedURLException {
         //WebDriver driver = initializeDriver("firefox");
+        try {
         testReport = Report.createTest("Verify add Item To Cart And Remove From Products Page");
 
         driver.findElement(By.id("add-to-cart-sauce-labs-backpack")).click();
@@ -81,8 +99,22 @@ public class allSevenTests {
         driver.findElement(By.id("remove-sauce-labs-backpack")).click();
         assertTrue(driver.findElements(By.className("shopping_cart_badge")).isEmpty());
         assertTrue(driver.findElement(By.id("add-to-cart-sauce-labs-backpack")).isDisplayed());
+        } catch (AssertionError e) {
+            // Log the assertion error and mark the test as failed
+            testReport.fail("Assertion failed: " + e.getMessage());
+            throw e; // Re-throw to ensure the test is marked as failed
+        } catch (Exception e) {
+            // Log any other exception and mark the test as failed
+            testReport.fail("Test encountered an exception: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            // Ensure the driver is closed
+            if (driver != null) {
+                driver.quit();
+            }
+            Report.flush();
+        }
 
-        driver.quit();
     }
 
 
@@ -96,7 +128,7 @@ public class allSevenTests {
     @Tag("addItemToCartAndRemoveFromCheckoutPage")
     @Test
     public void addItemToCartAndRemoveFromCheckoutPage() {
-
+        try{
         testReport = Report.createTest("Verify add Item To Cart And Remove From Checkout Page");
         driver.findElement(By.id("add-to-cart-sauce-labs-backpack")).click();
         assertEquals("1", driver.findElement(By.className("shopping_cart_badge")).getText());
@@ -111,10 +143,26 @@ public class allSevenTests {
         driver.findElement(By.id("cancel")).click();
         driver.findElement(By.id("remove-sauce-labs-backpack")).click();
         assertTrue(driver.findElements(By.className("shopping_cart_badge")).isEmpty());
+    } catch (AssertionError e) {
+        // Log the assertion error and mark the test as failed
+        testReport.fail("Assertion failed: " + e.getMessage());
+        throw e; // Re-throw to ensure the test is marked as failed
+    } catch (Exception e) {
+        // Log any other exception and mark the test as failed
+        testReport.fail("Test encountered an exception: " + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        // Ensure the driver is closed
+        if (driver != null) {
+            driver.quit();
+        }
+            Report.flush();
+    }
     }
     @Tag("addItemToCartAndRemoveFromProductDetailsPage")
     @Test
     public void addItemToCartAndRemoveFromProductDetailsPage() throws MalformedURLException {
+        try{
         testReport = Report.createTest("Verify add Item To Cart And Remove From Product Details Page");
         // Navigate to product details page
         driver.findElement(By.className("inventory_item_name")).click();
@@ -128,14 +176,27 @@ public class allSevenTests {
         // Verify cart icon and "Add to Cart" option
         assertTrue(driver.findElements(By.className("shopping_cart_badge")).isEmpty());
         assertTrue(driver.findElement(By.id("add-to-cart")).isDisplayed());
+        } catch (AssertionError e) {
+            // Log the assertion error and mark the test as failed
+            testReport.fail("Assertion failed: " + e.getMessage());
+            throw e; // Re-throw to ensure the test is marked as failed
+        } catch (Exception e) {
+            // Log any other exception and mark the test as failed
+            testReport.fail("Test encountered an exception: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            // Ensure the driver is closed
+            if (driver != null) {
+                driver.quit();
+            }
+            Report.flush();
+        }
 
-
-        // Quit WebDriver
-        driver.quit();
     }
     @Tag("buyItems")
     @Test
     public void buyItems() throws MalformedURLException {
+        try{
         testReport = Report.createTest("buyItems");
         driver.findElement(By.id("add-to-cart-sauce-labs-backpack")).click();
         driver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
@@ -155,19 +216,32 @@ public class allSevenTests {
 
 
         assertTrue(driver.getCurrentUrl().contains("checkout-complete"));
+        } catch (AssertionError e) {
+            // Log the assertion error and mark the test as failed
+            testReport.fail("Assertion failed: " + e.getMessage());
+            throw e; // Re-throw to ensure the test is marked as failed
+        } catch (Exception e) {
+            // Log any other exception and mark the test as failed
+            testReport.fail("Test encountered an exception: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            // Ensure the driver is closed
+            if (driver != null) {
+                driver.quit();
+            }
+            Report.flush();
+        }
 
-        // Quit WebDriver
-        driver.quit();
     }
 
 
     @Tag("addItemToCartLogoutAndVerifyCartPersistence")
     @Test
     public void addItemToCartLogoutAndVerifyCartPersistence() throws MalformedURLException {
-
+        try{
         testReport = Report.createTest("Verify add Item To Cart Logout And Verify Cart Persistence");
         // Read data from JSON file
-        JSONObject userData = Json.readUserData("C:\\Users\\Maheen\\IdeaProjects\\Junit\\src\\test\\java\\testdata.json");
+        JSONObject userData = Json.readUserData("src/main/resources/testdata.json");
         String username = (String) userData.get("username");
         String password = (String) userData.get("password");
 
@@ -194,15 +268,30 @@ public class allSevenTests {
 
         // Verify cart persistence
         assertEquals("1", driver.findElement(By.className("shopping_cart_badge")).getText());
+        } catch (AssertionError e) {
+            // Log the assertion error and mark the test as failed
+            testReport.fail("Assertion failed: " + e.getMessage());
+            throw e; // Re-throw to ensure the test is marked as failed
+        } catch (Exception e) {
+            // Log any other exception and mark the test as failed
+            testReport.fail("Test encountered an exception: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            // Ensure the driver is closed
+            if (driver != null) {
+                driver.quit();
+            }
+            Report.flush();
+        }
 
-        driver.quit();
     }
     @Tag("verifySortingOptions")
     @Test
     public void verifySortingOptions() throws MalformedURLException {
         // Read data from JSON file
+        try{
         testReport = Report.createTest("Verify Sorting Options Test");
-        JSONObject userData = Json.readUserData("C:\\Users\\Maheen\\IdeaProjects\\Junit\\src\\test\\java\\testdata.json");
+        JSONObject userData = Json.readUserData("src/main/resources/testdata.json");
         String username = (String) userData.get("username");
         String password = (String) userData.get("password");
         login(driver, username, password);
@@ -210,10 +299,22 @@ public class allSevenTests {
         verifySortingOption("za", By.className("inventory_item_name"), false);
         verifySortingOption("lohi", By.className("inventory_item_price"), true);
         verifySortingOption("hilo", By.className("inventory_item_price"), false);
+        } catch (AssertionError e) {
+            // Log the assertion error and mark the test as failed
+            testReport.fail("Assertion failed: " + e.getMessage());
+            throw e; // Re-throw to ensure the test is marked as failed
+        } catch (Exception e) {
+            // Log any other exception and mark the test as failed
+            testReport.fail("Test encountered an exception: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            // Ensure the driver is closed
+            if (driver != null) {
+                driver.quit();
+            }
+            Report.flush();
+        }
 
-
-
-        driver.quit();
     }
     private void verifySortingOption(String optionValue, By locator, boolean ascending) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));

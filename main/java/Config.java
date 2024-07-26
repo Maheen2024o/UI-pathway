@@ -12,7 +12,7 @@ public class Config {
     private static JSONObject config;
 
     static {
-        try (FileReader reader = new FileReader("C:\\Users\\Maheen\\IdeaProjects\\Junit\\src\\main\\java\\config.json")) {
+        try (FileReader reader = new FileReader("src/main/resources/config.json")) {
             JSONParser parser = new JSONParser();
             config = (JSONObject) parser.parse(reader);
         } catch (IOException | ParseException e) {
